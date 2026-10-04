@@ -5,9 +5,9 @@ import { useLabStore } from '../store/useLabStore';
 import { fileStatuses, activeWt, type FileStatus } from '../git-engine/repository';
 
 const BADGE: Record<FileStatus, { text: string; c: string } | null> = {
-  untracked: { text: '未跟踪', c: 'var(--color-orange)' },
-  modified: { text: '已修改', c: 'var(--color-yellow)' },
-  staged: { text: '已暂存', c: 'var(--color-mint-border)' },
+  untracked: { text: '未跟踪', c: 'var(--color-warn)' },
+  modified: { text: '已修改', c: 'var(--color-warn)' },
+  staged: { text: '已暂存', c: 'var(--color-ok)' },
   'staged+modified': { text: '暂存后又改', c: 'var(--color-yellow)' },
   clean: null,
 };
@@ -45,7 +45,7 @@ export function FileExplorer() {
     <aside className="flex min-h-0 flex-col p-3">
       <div
         className="flat-card flex min-h-0 flex-1 flex-col p-3"
-        style={{ background: 'var(--color-zone-work)' }}
+        style={{ background: 'var(--color-panel)', border: '1.5px solid var(--color-hairline)' }}
       >
         <div className="flex items-center justify-between px-1 pb-2">
           <div>
@@ -81,7 +81,7 @@ export function FileExplorer() {
                     borderRadius: 'var(--radius-chip)',
                     background: f.ignored ? 'transparent' : 'var(--color-cream)',
                     color: 'var(--color-ink)',
-                    border: f.ignored ? '1.5px dashed var(--color-muted)' : 'none',
+                    border: f.ignored ? '1.5px dashed var(--color-muted)' : '1.5px solid var(--color-cream-border)',
                     boxShadow: f.ignored ? 'none' : 'var(--shadow-flat)',
                   }}
                   title={f.ignored ? '被 .gitignore 忽略' : `${f.path} · 点击编辑（相当于在编辑器里改代码）`}
@@ -127,12 +127,12 @@ function EditorModal() {
   const modified = tracked && (wt.workingFiles[editing] ?? []).join('\n') !== (headTree?.[editing] ?? []).join('\n');
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-6" style={{ background: 'rgba(0,0,0,0.55)' }} onClick={() => openEditor(null)}>
+    <div className="fixed inset-0 z-40 flex items-center justify-center p-6" style={{ background: 'rgba(30,43,58,0.35)' }} onClick={() => openEditor(null)}>
       <motion.div
         initial={{ scale: 0.96, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className="flat-card flex h-[70vh] w-[720px] max-w-full flex-col overflow-hidden"
-        style={{ background: 'var(--color-zone-work)' }}
+        style={{ background: 'var(--color-panel)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1.5px solid var(--color-hairline)' }}>
@@ -150,7 +150,7 @@ function EditorModal() {
           onChange={(e) => setDraft(e.target.value)}
           spellCheck={false}
           className="mono min-h-0 flex-1 resize-none p-4 text-xs leading-relaxed outline-none"
-          style={{ background: 'var(--color-bg)', color: 'var(--color-cream)' }}
+          style={{ background: 'var(--color-bg)', color: 'var(--color-ink)' }}
         />
         <div className="flex justify-end gap-2 px-5 py-3" style={{ borderTop: '1.5px solid var(--color-hairline)' }}>
           <button onClick={() => openEditor(null)} className="px-4 py-1.5 text-xs font-bold" style={{ borderRadius: 'var(--radius-chip)', color: 'var(--color-muted)' }}>
@@ -176,12 +176,12 @@ function NewFileModal() {
   const [name, setName] = useState('');
   if (!newFileOpen) return null;
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.55)' }} onClick={() => setNewFileOpen(false)}>
+    <div className="fixed inset-0 z-40 flex items-center justify-center" style={{ background: 'rgba(30,43,58,0.35)' }} onClick={() => setNewFileOpen(false)}>
       <motion.div
         initial={{ scale: 0.96, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className="flat-card w-96 p-5"
-        style={{ background: 'var(--color-zone-work)' }}
+        style={{ background: 'var(--color-panel)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-sm font-bold" style={{ color: 'var(--color-cream)' }}>新建文件</div>

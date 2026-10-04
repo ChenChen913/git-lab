@@ -5,6 +5,7 @@ import { CommitGraph } from './components/CommitGraph';
 import { Terminal } from './components/Terminal';
 import { RightPanel } from './components/RightPanel';
 import { ConflictPanel } from './components/ConflictPanel';
+import { Onboarding } from './components/Onboarding';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
       <Terminal />
       <StatusBar />
       <ConflictPanel />
+      <Onboarding />
     </div>
   );
 }

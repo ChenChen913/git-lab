@@ -2,33 +2,57 @@
 
 /* ============================================================
    Design Tokens — 全站唯一颜色/字体/圆角/投影来源
-   风格：扁平卡片式教学信息图（Flat 2.0 / 贴纸感）
-   禁止：渐变、玻璃拟态、多层阴影、发光、高饱和荧光色
+   风格：浅色干净底 + 扁平卡片式教学信息图（Flat 2.0 / 贴纸感）
+   参照 tu01-tu03 的卡片与动画语义；页面底色保持浅色
+   禁止：渐变、玻璃拟态、3D、多层阴影、发光、高饱和荧光色
    ============================================================ */
 :root {
-  /* 颜色 */
-  --color-cream: #f0eee7; /* 米白：主线 commit 节点、工作区文件条 */
-  --color-blue: #85ace3; /* 雾蓝：master 提交节点、feature 标签底、add 箭头 */
-  --color-mint: #b9dcc6; /* 薄荷绿：master 标签底 */
-  --color-mint-border: #7fcb96; /* 亮绿：提交历史区描边、commit 箭头 */
-  --color-orange: #eca763; /* 暖橙：feature 分支节点与标签底 */
-  --color-yellow: #e9d5a3; /* 米黄：高亮圆环、rebase 动作箭头 */
-  --color-zone-work: #2c2c2c; /* 工作区卡片底 */
+  /* 页面与面板（浅色） */
+  --color-bg: #f6f7f9; /* 页面背景：干净浅灰白 */
+  --color-panel: #ffffff; /* 面板底 */
+  --color-ink: #1e2b3a; /* 主文字 / 深色文字 */
+  --color-muted: rgba(30, 43, 58, 0.55); /* 浅底上的次要文字 */
+  --color-hairline: rgba(30, 43, 58, 0.12); /* 浅底发丝分隔线 */
+
+  /* 提交图（浅底适配） */
+  --color-edge-main: #c5cdd8; /* 主干水平线（浅灰） */
+  --color-ghost: #cfc9bd; /* 幽灵态：降饱和暖灰填充 */
+  --color-ghost-edge: rgba(30, 43, 58, 0.3); /* 幽灵态虚线描边 */
+
+  /* 卡片与图形（tu01-tu03 语义，深色贴纸卡放在浅底上） */
+  --color-cream: #f0eee7; /* 主线 commit 节点、工作区文件条 */
+  --color-cream-border: #d9d4c6; /* 浅底上米白条描边 */
+  --color-blue: #85ace3; /* master 提交节点、feature 标签底、add 箭头 */
+  --color-mint: #b9dcc6; /* master 标签底 */
+  --color-mint-border: #7fcb96; /* 提交历史区描边、commit 箭头 */
+  --color-orange: #eca763; /* feature 分支节点与标签底 */
+  --color-yellow: #e9d5a3; /* 高亮圆环（HEAD）、stash 描边 */
+  --color-zone-work: #2c2c2c; /* 工作区卡片底 / 终端底 */
   --color-zone-stage: #2e3a50; /* 暂存区卡片底 */
   --color-zone-stage-border: #6ea0e6; /* 暂存区描边 */
   --color-zone-history: #2a4335; /* 提交历史卡片底 */
   --color-chip-stage: #d4e0f6; /* 暂存区文件条底 */
-  --color-ink: #1e2b3a; /* 标签和箭头上的深色文字 */
-  --color-bg: #3a3a3a; /* 页面中性深灰 */
-  --color-ghost: #6f6a5e; /* 幽灵态：降饱和灰褐填充 */
 
-  /* 扩展令牌（终端语义/状态反馈，同样全站唯一来源） */
-  --color-ok: #7fcb96;
-  --color-warn: #e9d5a3;
-  --color-error: #d98d86;
-  --color-info: #85ace3;
-  --color-muted: rgba(240, 238, 231, 0.55);
-  --color-hairline: rgba(240, 238, 231, 0.14);
+  /* 深色卡片内部专用（工作区/历史卡/终端内的浅色文字） */
+  --color-on-dark: #f0eee7;
+  --color-on-dark-muted: rgba(240, 238, 231, 0.55);
+  --color-on-dark-hairline: rgba(240, 238, 231, 0.16);
+
+  /* 终端（独立深色面板） */
+  --t-bg: #2c2c2c;
+  --t-text: #f0eee7;
+  --t-muted: rgba(240, 238, 231, 0.5);
+  --t-hairline: rgba(240, 238, 231, 0.14);
+  --t-ok: #7fcb96;
+  --t-error: #d98d86;
+  --t-info: #85ace3;
+  --t-warn: #e9d5a3;
+
+  /* 状态语义 */
+  --color-ok: #4e9e6b;
+  --color-warn: #b8862f;
+  --color-error: #c0564a;
+  --color-info: #4a7ec4;
 
   /* 字体 */
   --font-mono: "JetBrains Mono", "Fira Code", "IBM Plex Mono", Consolas, monospace;
@@ -41,7 +65,7 @@
   --radius-badge: 6px;
 
   /* 投影：统一单层柔和投影 */
-  --shadow-flat: 0 2px 6px rgba(0, 0, 0, 0.25);
+  --shadow-flat: 0 2px 6px rgba(30, 43, 58, 0.14);
 }
 
 html,
@@ -53,7 +77,7 @@ body,
 body {
   font-family: var(--font-sans);
   font-weight: 700;
-  color: var(--color-cream);
+  color: var(--color-ink);
   background: var(--color-bg);
 }
 
@@ -69,7 +93,7 @@ body {
   box-shadow: var(--shadow-flat);
 }
 
-/* 分区卡片：深色底 + 亮色描边 */
+/* 分区卡片：深色底 + 亮色描边（tu01 贴纸卡） */
 .zone {
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-flat);
@@ -92,7 +116,7 @@ body {
   height: 8px;
 }
 *::-webkit-scrollbar-thumb {
-  background: rgba(240, 238, 231, 0.22);
+  background: rgba(30, 43, 58, 0.2);
   border-radius: 8px;
 }
 *::-webkit-scrollbar-track {

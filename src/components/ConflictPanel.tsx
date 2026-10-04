@@ -40,13 +40,13 @@ export function ConflictPanel() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-50 flex items-center justify-center p-6"
-        style={{ background: 'rgba(0,0,0,0.55)' }}
+        style={{ background: 'rgba(30,43,58,0.35)' }}
       >
         <motion.div
           initial={{ scale: 0.95, y: 12 }}
           animate={{ scale: 1, y: 0 }}
           className="flat-card flex max-h-[82vh] w-[880px] max-w-full flex-col overflow-hidden"
-          style={{ background: 'var(--color-zone-work)' }}
+          style={{ background: 'var(--color-panel)' }}
         >
           <div className="flex items-center gap-3 px-5 py-3" style={{ borderBottom: '1.5px solid var(--color-hairline)' }}>
             <AlertTriangle className="h-5 w-5" style={{ color: 'var(--color-error)' }} />
@@ -104,9 +104,9 @@ export function ConflictPanel() {
 
               {manual === null ? (
                 <>
-                  <div className="mt-4 p-3" style={{ ...cardDark, background: 'rgba(0,0,0,0.25)' }}>
+                  <div className="mt-4 p-3" style={{ ...cardDark, background: 'var(--color-bg)' }}>
                     <div className="mb-1 text-[11px] font-bold" style={{ color: 'var(--color-muted)' }}>Git 写入文件的冲突标记（供你理解现场）</div>
-                    <pre className="mono overflow-auto text-[10.5px] leading-relaxed" style={{ color: 'var(--color-cream)' }}>{markerText}</pre>
+                    <pre className="mono overflow-auto text-[10.5px] leading-relaxed" style={{ color: 'var(--color-ink)' }}>{markerText}</pre>
                   </div>
                   <div className="mt-4 flex flex-wrap items-center gap-2">
                     <span className="text-xs font-bold" style={{ color: 'var(--color-cream)' }}>解决方式：</span>
@@ -126,7 +126,7 @@ export function ConflictPanel() {
                     onChange={(e) => setManual(e.target.value)}
                     spellCheck={false}
                     className="mono h-56 w-full resize-none p-3 text-[11px] leading-relaxed outline-none"
-                    style={{ ...cardDark, background: 'var(--color-bg)', color: 'var(--color-cream)', border: '1.5px solid var(--color-hairline)', borderRadius: 'var(--radius-sub)' }}
+                    style={{ ...cardDark, background: 'var(--color-bg)', color: 'var(--color-ink)', border: '1.5px solid var(--color-hairline)', borderRadius: 'var(--radius-sub)' }}
                   />
                   <div className="mt-2 flex justify-end gap-2">
                     <button onClick={() => setManual(null)} className="px-3 py-1.5 text-xs font-bold" style={{ color: 'var(--color-muted)' }}>返回</button>
@@ -195,7 +195,7 @@ function SidePanel({
   }, [lines, other]);
 
   // 语义：当前分支 = 蓝色分区；合入分支 = 橙色分区
-  const zoneBg = tone === 'blue' ? 'var(--color-zone-stage)' : '#3f3226';
+  const zoneBg = tone === 'blue' ? 'var(--color-zone-stage)' : '#4a3a28';
   const zoneBorder = tone === 'blue' ? 'var(--color-zone-stage-border)' : 'var(--color-orange)';
   const titleColor = tone === 'blue' ? 'var(--color-blue)' : 'var(--color-orange)';
   const hl = tone === 'blue' ? 'rgba(133,172,227,0.32)' : 'rgba(236,167,99,0.32)';
@@ -210,13 +210,13 @@ function SidePanel({
               key={i}
               data-ch={flags[i] ? 1 : 0}
               className="whitespace-pre rounded"
-              style={{ background: flags[i] ? hl : 'transparent', color: flags[i] ? 'var(--color-cream)' : 'var(--color-muted)' }}
+              style={{ background: flags[i] ? hl : 'transparent', color: flags[i] ? 'var(--color-on-dark)' : 'var(--color-on-dark-muted)' }}
             >
               {l || ' '}
             </div>
           ))
         ) : (
-          <span style={{ color: 'var(--color-muted)' }}>（空）</span>
+          <span style={{ color: 'var(--color-on-dark-muted)' }}>（空）</span>
         )}
       </div>
     </div>
@@ -243,10 +243,10 @@ function ResolveBtn({ label, desc, onClick, icon }: { label: string; desc: strin
       className="flex items-center gap-1.5 px-3 py-2 text-left"
       style={{
         borderRadius: 'var(--radius-sub)',
-        background: 'var(--color-cream)',
+        background: 'var(--color-panel)',
         color: 'var(--color-ink)',
         boxShadow: 'var(--shadow-flat)',
-        border: icon ? '2px dashed rgba(30,43,58,0.4)' : 'none',
+        border: icon ? '2px dashed rgba(30,43,58,0.35)' : '1.5px solid var(--color-hairline)',
       }}
     >
       {icon && <Pencil className="h-3.5 w-3.5" />}
@@ -264,7 +264,7 @@ function Step({ n, label, done }: { n: number; label: string; done: boolean }) {
       className="flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-bold"
       style={{
         borderRadius: 'var(--radius-badge)',
-        background: done ? 'var(--color-mint)' : 'rgba(240,238,231,0.1)',
+        background: done ? 'var(--color-mint)' : 'rgba(30,43,58,0.08)',
         color: done ? 'var(--color-ink)' : 'var(--color-muted)',
       }}
     >

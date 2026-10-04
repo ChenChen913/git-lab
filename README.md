@@ -2,6 +2,8 @@
 
 > 输入真实 Git 命令 → Mini Git 引擎改变仓库状态 → UI 用动画展示状态变化 → 亲眼看见 Git 是怎么工作的。
 
+**📖 使用手册：[docs/USAGE.md](docs/USAGE.md)** —— 分章节讲解 9 个引导实验怎么玩、每一步在界面哪里观察什么现象、以及 5 个自由探索剧本。
+
 ![总览](docs/screenshots/overview.png)
 
 这不是一个 Git 教程阅读网站，而是一个可以随便试、随便玩、改坏了能重来的**交互式 Git 实验室**。视觉风格为**扁平卡片式教学信息图**（深灰底 + 低饱和马卡龙色 + 贴纸质感，参见 [docs/UI-DESIGN-SPEC.md](docs/UI-DESIGN-SPEC.md)）；教学内容来自两份本地文档（`git+github教程.md` 视频转稿与整理后的 `Git与GitHub入门教程.md`）。

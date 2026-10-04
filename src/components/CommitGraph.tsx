@@ -13,9 +13,9 @@ const NODE_R = 10;
 
 // 语义：实心圆点 = 一个 commit；圆点颜色 = 所属分支的颜色
 const LANE_COLORS = ['var(--color-cream)', 'var(--color-orange)', 'var(--color-blue)', 'var(--color-yellow)'];
-const MAIN_EDGE = 'rgba(240,238,231,0.85)';
+const MAIN_EDGE = 'var(--color-edge-main)';
 const GHOST_FILL = 'var(--color-ghost)';
-const GHOST_EDGE = 'rgba(240,238,231,0.35)';
+const GHOST_EDGE = 'var(--color-ghost-edge)';
 
 interface Row {
   commit: Commit;

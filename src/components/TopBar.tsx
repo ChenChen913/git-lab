@@ -13,12 +13,17 @@ export function TopBar() {
   return (
     <header
       className="z-20 flex h-12 shrink-0 items-center gap-3 px-4"
-      style={{ background: 'var(--color-zone-work)', borderBottom: '1.5px solid var(--color-hairline)' }}
+      style={{ background: 'var(--color-panel)', borderBottom: '1.5px solid var(--color-hairline)' }}
     >
       <div className="flex items-center gap-2">
-        <GitMark />
+        <div
+          className="flex h-7 w-7 items-center justify-center"
+          style={{ borderRadius: 'var(--radius-badge)', background: 'var(--color-orange)', boxShadow: 'var(--shadow-flat)' }}
+        >
+          <FolderGit2 className="h-4 w-4" style={{ color: 'var(--color-ink)' }} />
+        </div>
         <div className="leading-tight">
-          <div className="text-sm font-bold" style={{ color: 'var(--color-cream)' }}>Git 可视化交互实验室</div>
+          <div className="text-sm font-bold" style={{ color: 'var(--color-ink)' }}>Git 可视化交互实验室</div>
           <div className="text-[10px] font-bold" style={{ color: 'var(--color-muted)' }}>输入命令，看见 Git 的状态变化</div>
         </div>
       </div>
@@ -34,11 +39,11 @@ export function TopBar() {
               key={w.id}
               layout
               onClick={() => setActiveWorktree(w.id)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold"
               style={{
                 borderRadius: 'var(--radius-chip)',
-                background: active ? 'var(--color-cream)' : 'rgba(240,238,231,0.08)',
-                color: active ? 'var(--color-ink)' : 'var(--color-muted)',
+                background: active ? 'var(--color-ink)' : 'rgba(30,43,58,0.06)',
+                color: active ? 'var(--color-cream)' : 'var(--color-muted)',
                 boxShadow: active ? 'var(--shadow-flat)' : 'none',
               }}
               title={w.id === 'wt-main' ? '主工作目录' : w.path}
@@ -50,7 +55,7 @@ export function TopBar() {
                   className="mono px-1 text-[10px]"
                   style={{
                     borderRadius: 'var(--radius-badge)',
-                    background: active ? 'rgba(30,43,58,0.14)' : 'rgba(240,238,231,0.12)',
+                    background: active ? 'rgba(240,238,231,0.2)' : 'rgba(30,43,58,0.1)',
                   }}
                 >
                   {w.head.branch}
@@ -66,7 +71,7 @@ export function TopBar() {
           <button
             onClick={() => setRightTab('tutorial')}
             className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold"
-            style={{ borderRadius: 'var(--radius-chip)', background: 'var(--color-orange)', color: 'var(--color-ink)' }}
+            style={{ borderRadius: 'var(--radius-chip)', background: 'var(--color-yellow)', color: 'var(--color-ink)' }}
           >
             <GraduationCap className="h-3.5 w-3.5" /> 实验进行中
           </button>
@@ -88,17 +93,6 @@ export function TopBar() {
   );
 }
 
-function GitMark() {
-  return (
-    <div
-      className="flex h-7 w-7 items-center justify-center"
-      style={{ borderRadius: 'var(--radius-badge)', background: 'var(--color-orange)', boxShadow: 'var(--shadow-flat)' }}
-    >
-      <FolderGit2 className="h-4 w-4" style={{ color: 'var(--color-ink)' }} />
-    </div>
-  );
-}
-
 export function StatusBar() {
   const repo = useLabStore((s) => s.repo);
   const wt = activeWt(repo);
@@ -107,7 +101,7 @@ export function StatusBar() {
   return (
     <footer
       className="z-20 flex h-7 shrink-0 items-center gap-4 px-4 text-[11px]"
-      style={{ background: 'var(--color-zone-work)', borderTop: '1.5px solid var(--color-hairline)', color: 'var(--color-muted)' }}
+      style={{ background: 'var(--color-panel)', borderTop: '1.5px solid var(--color-hairline)', color: 'var(--color-muted)' }}
     >
       <span className="mono">
         {repo.initialized ? `分支 ${wt.head.branch ?? 'HEAD'}` : '未初始化（git init 开始）'}

@@ -29,7 +29,7 @@ const TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
 ];
 
 const cardStyle: React.CSSProperties = {
-  background: 'var(--color-zone-work)',
+  background: 'var(--color-panel)',
   borderRadius: 'var(--radius-sub)',
   border: '1.5px solid var(--color-hairline)',
 };
@@ -86,10 +86,11 @@ function TutorialPanel() {
         <>
           <div
             className="mb-3 p-3 text-[11px] font-bold leading-relaxed"
-            style={{ ...cardStyle, background: 'var(--color-zone-stage)', border: '1.5px solid var(--color-zone-stage-border)', color: 'var(--color-chip-stage)' }}
+            style={{ ...cardStyle, background: 'rgba(133,172,227,0.14)', border: '1.5px solid var(--color-zone-stage-border)', color: 'var(--color-info)' }}
           >
             <div className="mb-1">引导实验</div>
             跟着实验一步步输入真实命令，边做边看动画。选一个开始——它会重置演示项目到实验场景。
+            图文完整手册见 <span className="mono">docs/USAGE.md</span>。
           </div>
           <div className="flex flex-col gap-2">
             {LESSONS.map((l) => (
@@ -103,7 +104,7 @@ function TutorialPanel() {
               >
                 <div className="flex items-center gap-2">
                   <Play className="h-3 w-3" style={{ color: 'var(--color-orange)' }} />
-                  <span className="text-xs font-bold" style={{ color: 'var(--color-cream)' }}>{l.title}</span>
+                  <span className="text-xs font-bold" style={{ color: 'var(--color-ink)' }}>{l.title}</span>
                 </div>
                 <div className="mt-1 text-[11px] font-bold leading-relaxed" style={{ color: 'var(--color-muted)' }}>{l.goal}</div>
               </button>
@@ -115,7 +116,7 @@ function TutorialPanel() {
       {lesson && (
         <div>
           <div className="flex items-center justify-between">
-            <div className="text-xs font-bold" style={{ color: 'var(--color-cream)' }}>{lesson.title}</div>
+            <div className="text-xs font-bold" style={{ color: 'var(--color-ink)' }}>{lesson.title}</div>
             <button onClick={stopLesson} className="text-[11px] font-bold" style={{ color: 'var(--color-muted)' }}>退出</button>
           </div>
           <div className="mt-1 text-[11px] font-bold leading-relaxed" style={{ color: 'var(--color-muted)' }}>{lesson.goal}</div>
@@ -221,7 +222,7 @@ function DiffPanel() {
                 className="whitespace-pre"
                 style={{
                   background: r.type === 'add' ? 'rgba(127,203,150,0.16)' : r.type === 'del' ? 'rgba(217,141,134,0.16)' : 'transparent',
-                  color: r.type === 'add' ? 'var(--color-mint-border)' : r.type === 'del' ? 'var(--color-error)' : 'var(--color-muted)',
+                  color: r.type === 'add' ? 'var(--color-ok)' : r.type === 'del' ? 'var(--color-error)' : 'var(--color-muted)',
                 }}
               >
                 {r.type === 'add' ? '+ ' : r.type === 'del' ? '- ' : '  '}
@@ -268,12 +269,12 @@ function StashPanel() {
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             className="p-2.5"
-            style={{ ...cardStyle, background: 'var(--color-zone-stage)', border: '2px dashed var(--color-yellow)' }}
+            style={{ ...cardStyle, background: 'var(--color-zone-work)', border: '2px dashed var(--color-yellow)' }}
           >
             <div className="mono text-[10.5px]" style={{ color: 'var(--color-yellow)' }}>stash@{'{'}{repo.stashes.indexOf(s)}{'}'}</div>
-            <div className="mt-0.5 text-[11px] font-bold" style={{ color: 'var(--color-cream)' }}>{s.label}</div>
+            <div className="mt-0.5 text-[11px] font-bold" style={{ color: 'var(--color-ink)' }}>{s.label}</div>
             <div className="mt-1 flex items-center gap-2">
-              <span className="text-[10px] font-bold" style={{ color: 'var(--color-muted)' }}>{Object.keys(s.files).length} 个文件的改动</span>
+              <span className="text-[10px] font-bold" style={{ color: 'var(--color-on-dark-muted)' }}>{Object.keys(s.files).length} 个文件的改动</span>
               <button
                 onClick={() => runCommand('git stash pop')}
                 className="ml-auto flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-bold"
@@ -324,7 +325,7 @@ function RemotePanel() {
       ) : (
         <>
           <div className="mb-2 flex items-center gap-2">
-            <span className="text-[11px] font-bold" style={{ color: 'var(--color-cream)' }}>{repo.remote.name}</span>
+            <span className="text-[11px] font-bold" style={{ color: 'var(--color-ink)' }}>{repo.remote.name}</span>
             <span className="mono truncate text-[10px] font-bold" style={{ color: 'var(--color-muted)' }}>{repo.remote.url}</span>
             <button
               onClick={() => navigator.clipboard?.writeText(repo.remote!.url)}
@@ -372,14 +373,14 @@ function RemotePanel() {
           </div>
 
           <div className="mt-3 p-3" style={{ ...cardStyle, background: 'var(--color-zone-stage)', border: '1.5px solid var(--color-zone-stage-border)' }}>
-            <div className="flex items-center gap-1.5 text-[11px] font-bold" style={{ color: 'var(--color-chip-stage)' }}>
+            <div className="flex items-center gap-1.5 text-[11px] font-bold" style={{ color: 'var(--color-on-dark)' }}>
               <KeyRound className="h-3 w-3" /> SSH Key 是怎么验证身份的
             </div>
-            <div className="mt-1.5 text-[10.5px] font-bold leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+            <div className="mt-1.5 text-[10.5px] font-bold leading-relaxed" style={{ color: 'var(--color-on-dark-muted)' }}>
               一对文件：<b>私钥</b>留在自己电脑、绝不外传；<b>公钥</b>交给 GitHub。
               推送时电脑用私钥生成一个仿不了的「签名」，GitHub 用公钥核对——对得上，就证明代码确实是你推的。
             </div>
-            <div className="mono mt-2 p-2 text-[10px]" style={{ borderRadius: 'var(--radius-chip)', background: 'rgba(0,0,0,0.25)', color: 'var(--color-cream)' }}>
+            <div className="mono mt-2 p-2 text-[10px]" style={{ borderRadius: 'var(--radius-chip)', background: 'rgba(0,0,0,0.25)', color: 'var(--color-on-dark)' }}>
               ssh-keygen -t ed25519 -C "你的邮箱" → 把 ~/.ssh/id_ed25519.pub 填到 GitHub → Settings → SSH keys
             </div>
           </div>
@@ -411,7 +412,7 @@ function MiniRepo({
         {commits.slice(0, 8).map((c) => (
           <div key={c.id} className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: dot }} />
-            <span className="mono truncate text-[10px]" style={{ color: 'var(--color-cream)' }}>{c.hash} {c.message.split('\n')[0]}</span>
+            <span className="mono truncate text-[10px]" style={{ color: 'var(--color-ink)' }}>{c.hash} {c.message.split('\n')[0]}</span>
           </div>
         ))}
         {!commits.length && <span className="text-[10px] font-bold" style={{ color: 'var(--color-muted)' }}>（空）</span>}
@@ -426,8 +427,8 @@ function HelpPanel() {
   const total = visibleCommits(useLabStore((s) => s.repo)).length;
   return (
     <div className="text-[11px] font-bold leading-relaxed">
-      <div className="p-3" style={{ ...cardStyle, background: 'var(--color-zone-history)', border: '1.5px solid var(--color-mint-border)' }}>
-        <div className="text-xs font-bold" style={{ color: 'var(--color-mint)' }}>这是一个 Git 实验室</div>
+      <div className="p-3" style={{ ...cardStyle, background: 'rgba(127,203,150,0.14)', border: '1.5px solid var(--color-mint-border)' }}>
+        <div className="text-xs font-bold" style={{ color: 'var(--color-ok)' }}>这是一个 Git 实验室</div>
         <div className="mt-1" style={{ color: 'var(--color-muted)' }}>
           在下方终端输入真实 Git 命令，观察上方三个区域与 Commit Graph 的动画变化。当前历史里有 {total} 个可见提交。
         </div>
@@ -462,6 +463,7 @@ function HelpPanel() {
       </Section>
 
       <div className="mt-3 p-3 text-[10.5px]" style={{ ...cardStyle, color: 'var(--color-muted)' }}>
+        图文完整手册见项目 <span className="mono">docs/USAGE.md</span>。
         文件改动 = 点击左侧文件编辑保存；<span className="mono">.gitignore</span> 可直接创建并写入要忽略的文件名。
         想跟步骤学？点右上角「引导实验」。
       </div>

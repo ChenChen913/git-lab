@@ -27,6 +27,7 @@ interface LabState {
   lessonDone: boolean;
   lastCommand: string;
   lineSeq: number;
+  onboarding: boolean;
 
   runCommand: (raw: string) => void;
   setActiveWorktree: (id: string) => void;
@@ -38,6 +39,7 @@ interface LabState {
   setRightTab: (t: RightTab) => void;
   startLesson: (id: string) => void;
   stopLesson: () => void;
+  dismissOnboarding: () => void;
 }
 
 function freshRepo(): Repository {
@@ -87,12 +89,12 @@ export const useLabStore = create<LabState>((set, get) => {
   return {
     repo: freshRepo(),
     lines: [
-      { id: 1, kind: 'hint', text: 'Git Visual Lab — 输入 git 命令并回车；输入 help 查看支持命令；输入 start 开始引导实验' },
+      { id: 1, kind: 'hint', text: 'Git Visual Lab — 输入 git 命令并回车；输入 help 查看支持命令；点击右上角「引导实验」跟着学' },
       { id: 2, kind: 'muted', text: '演示项目「马克代办」已就绪（尚未 git init）。先试试：git init' },
     ],
     ops: { seq: 0, list: [] },
     lastDiff: null,
-    rightTab: 'help',
+    rightTab: 'tutorial',
     editing: null,
     newFileOpen: false,
     lessonId: null,
@@ -100,6 +102,7 @@ export const useLabStore = create<LabState>((set, get) => {
     lessonDone: false,
     lastCommand: '',
     lineSeq: 3,
+    onboarding: !localStorage.getItem('gvl-onboarded'),
 
     runCommand: (raw) => {
       const state = get();
@@ -190,6 +193,14 @@ export const useLabStore = create<LabState>((set, get) => {
     openEditor: (path) => set({ editing: path }),
     setNewFileOpen: (v) => set({ newFileOpen: v }),
     setRightTab: (t) => set({ rightTab: t }),
+    dismissOnboarding: () => {
+      try {
+        localStorage.setItem('gvl-onboarded', '1');
+      } catch {
+        /* 忽略存储失败 */
+      }
+      set({ onboarding: false });
+    },
 
     startLesson: (id) => {
       const lesson = LESSONS.find((l) => l.id === id);

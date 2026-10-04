@@ -221,9 +221,9 @@ export function ThreeAreas() {
         {/* .git 逻辑分组框（浅色虚线圆角框） */}
         <div
           className="relative flex min-w-0 items-stretch gap-3 px-5 pb-3 pt-9"
-          style={{ border: '2px dashed rgba(240,238,231,0.45)', borderRadius: 'var(--radius-card)' }}
+          style={{ border: '2px dashed rgba(30,43,58,0.3)', borderRadius: 'var(--radius-card)' }}
         >
-          <div className="mono absolute -top-3 left-4 flex items-center gap-1.5 px-1 text-[15px]" style={{ color: 'var(--color-cream)', background: 'var(--color-bg)' }}>
+          <div className="mono absolute -top-3 left-4 flex items-center gap-1.5 px-1 text-[15px]" style={{ color: 'var(--color-ink)', background: 'var(--color-panel)' }}>
             <GitBranch className="h-4 w-4" style={{ color: 'var(--color-orange)' }} />
             .git
           </div>
@@ -289,7 +289,7 @@ export function ThreeAreas() {
                   >
                     <div className="mono text-[11px]" style={{ color: 'var(--color-mint)' }}>
                       Commit {c.order}
-                      <span className="ml-2" style={{ color: 'var(--color-muted)' }}>{c.hash}</span>
+                      <span className="ml-2" style={{ color: 'var(--color-on-dark-muted)' }}>{c.hash}</span>
                     </div>
                     <div className="mt-0.5 flex flex-col gap-0.5">
                       {Object.keys(c.tree).slice(0, 2).map((p) => (
@@ -311,7 +311,7 @@ export function ThreeAreas() {
                   </motion.div>
                 ))}
                 {!shown.length && <EmptyHint>还没有提交</EmptyHint>}
-                <div className="mono mt-auto pt-1 text-[10px]" style={{ color: 'var(--color-muted)' }}>
+                <div className="mono mt-auto pt-1 text-[10px]" style={{ color: 'var(--color-on-dark-muted)' }}>
                   共 {chrono.length} 个提交{repo.ghosts.length > 0 ? ` · 虚影 ${repo.ghosts.length}` : ''} · 完整时间线见下方 Commit Graph
                 </div>
               </>
@@ -343,7 +343,7 @@ export function ThreeAreas() {
                 title="stash：临时收起的未提交改动（git stash pop 取回）"
               >
                 <div className="mono text-[12px]" style={{ color: 'var(--color-yellow)' }}>stash</div>
-                <div className="mono text-[10px]" style={{ color: 'var(--color-muted)' }}>×{stashCount} 收起的改动</div>
+                <div className="mono text-[10px]" style={{ color: 'var(--color-on-dark-muted)' }}>×{stashCount} 收起的改动</div>
               </div>
             </motion.div>
           )}
@@ -387,7 +387,7 @@ export function ThreeAreas() {
 }
 
 function EmptyHint({ children }: { children: React.ReactNode }) {
-  return <div className="text-[10.5px] font-bold" style={{ color: 'var(--color-muted)' }}>{children}</div>;
+  return <div className="text-[10.5px] font-bold" style={{ color: 'var(--color-on-dark-muted)' }}>{children}</div>;
 }
 
 function ZoneCard({
