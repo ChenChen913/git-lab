@@ -163,7 +163,7 @@ export function cmdRevert(repo: Repository, parsed: ParsedCommand): CommandResul
   const message = `Revert "${firstLine(target.message)}"\n\nThis reverts commit ${target.hash}.`;
   const next = structuredClone(repo);
   const nwt = activeWt(next);
-  const commit = makeCommit(next, { message, tree: cloneTree(parentTree), parents: [headId] });
+  const commit = makeCommit(next, { message, tree: cloneTree(parentTree), parents: [headId], branch });
   moveBranch(next, branch, commit.id);
   nwt.index = cloneTree(parentTree);
   return {
@@ -342,6 +342,7 @@ function replayPending(
       message: orig.message,
       tree: merged,
       parents: [st.replayBaseId],
+      branch: st.originalBranch,
     });
     next.ghosts.push(next.commits[orig.id]);
     st.replayBaseId = commit.id;

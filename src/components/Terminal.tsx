@@ -2,16 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { TerminalSquare } from 'lucide-react';
 import { promptText, useLabStore, type TerminalLine } from '../store/useLabStore';
 
-const KIND_CLASS: Record<string, string> = {
-  info: 'text-slate-200',
-  muted: 'text-slate-500',
-  success: 'text-emerald-400',
-  error: 'text-rose-400',
-  add: 'text-emerald-400',
-  del: 'text-rose-400',
-  hint: 'text-sky-400',
-  meta: 'text-amber-300',
-  warn: 'text-amber-400',
+const KIND_COLOR: Record<string, string> = {
+  info: 'var(--color-cream)',
+  muted: 'var(--color-muted)',
+  success: 'var(--color-ok)',
+  error: 'var(--color-error)',
+  add: 'var(--color-ok)',
+  del: 'var(--color-error)',
+  hint: 'var(--color-info)',
+  meta: 'var(--color-warn)',
+  warn: 'var(--color-warn)',
 };
 
 const QUICK = ['git init', 'git status', 'git add .', 'git commit -m "Update"', 'git log --oneline', 'git diff', 'help'];
@@ -69,11 +69,11 @@ export function Terminal() {
   };
 
   return (
-    <div className="flex h-56 shrink-0 flex-col border-t border-slate-800 bg-slate-900" onClick={() => inputRef.current?.focus()}>
-      <div className="flex items-center gap-2 border-b border-slate-800 px-4 py-1.5">
-        <TerminalSquare className="h-3.5 w-3.5 text-slate-500" />
-        <span className="text-[11px] font-semibold text-slate-300">Terminal</span>
-        <span className="text-[10px] text-slate-600">终端</span>
+    <div className="flex h-56 shrink-0 flex-col" style={{ background: 'var(--color-zone-work)', borderTop: '1.5px solid var(--color-hairline)' }} onClick={() => inputRef.current?.focus()}>
+      <div className="flex items-center gap-2 px-4 py-1.5" style={{ borderBottom: '1.5px solid var(--color-hairline)' }}>
+        <TerminalSquare className="h-3.5 w-3.5" style={{ color: 'var(--color-muted)' }} />
+        <span className="text-[11px] font-bold" style={{ color: 'var(--color-cream)' }}>Terminal</span>
+        <span className="text-[10px] font-bold" style={{ color: 'var(--color-muted)' }}>终端</span>
         <div className="ml-4 flex items-center gap-1">
           {QUICK.map((q) => (
             <button
@@ -82,23 +82,24 @@ export function Terminal() {
                 e.stopPropagation();
                 runCommand(q);
               }}
-              className="mono rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+              className="mono px-1.5 py-0.5 text-[10px]"
+              style={{ borderRadius: 'var(--radius-badge)', background: 'rgba(240,238,231,0.1)', color: 'var(--color-muted)' }}
             >
               {q}
             </button>
           ))}
         </div>
-        <span className="ml-auto text-[10px] text-slate-600">↑/↓ 翻历史 · Ctrl+L 清屏</span>
+        <span className="ml-auto text-[10px] font-bold" style={{ color: 'var(--color-muted)' }}>↑/↓ 翻历史 · Ctrl+L 清屏</span>
       </div>
       <div className="min-h-0 flex-1 overflow-auto px-4 py-2">
         {lines.map((l: TerminalLine) => (
-          <div key={l.id} className={`mono whitespace-pre-wrap text-[11.5px] leading-relaxed ${KIND_CLASS[l.kind] ?? 'text-slate-300'}`}>
-            {l.prompt && <span className="mr-2 text-emerald-500/90">{l.prompt}</span>}
+          <div key={l.id} className="mono whitespace-pre-wrap text-[11.5px] leading-relaxed" style={{ color: KIND_COLOR[l.kind] ?? 'var(--color-cream)' }}>
+            {l.prompt && <span className="mr-2" style={{ color: 'var(--color-mint-border)' }}>{l.prompt}</span>}
             {l.text}
           </div>
         ))}
         <div className="mono flex items-center gap-2 text-[11.5px]">
-          <span className="text-emerald-500/90">{promptText(repo)}</span>
+          <span style={{ color: 'var(--color-mint-border)' }}>{promptText(repo)}</span>
           <input
             ref={inputRef}
             value={input}
@@ -106,7 +107,8 @@ export function Terminal() {
             onKeyDown={onKey}
             spellCheck={false}
             autoComplete="off"
-            className="mono flex-1 bg-transparent text-slate-100 caret-emerald-400 outline-none"
+            className="mono flex-1 bg-transparent outline-none"
+            style={{ color: 'var(--color-cream)', caretColor: 'var(--color-mint-border)' }}
             placeholder="输入 git 命令并回车…"
           />
         </div>

@@ -290,6 +290,7 @@ export function cmdPull(repo: Repository, parsed: ParsedCommand): CommandResult 
       tree: merged,
       parents: [localId, remoteId],
       merge: true,
+      branch: b,
     });
     moveBranch(next, b, commit.id);
     nwt.index = { ...merged };

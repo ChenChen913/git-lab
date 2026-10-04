@@ -215,7 +215,7 @@ export function cmdCommit(repo: Repository, parsed: ParsedCommand): CommandResul
     const next = structuredClone(repo);
     const nwt = activeWt(next);
     const parents = [headCommitId(next, nwt)!, wt.mergeState!.theirsCommitId];
-    const commit = makeCommit(next, { message, tree, parents, merge: true });
+    const commit = makeCommit(next, { message, tree, parents, merge: true, branch });
     moveBranchLocal(next, branch, commit.id);
     nwt.index = cloneTree(tree);
     nwt.mergeState = null;
@@ -258,6 +258,7 @@ export function cmdCommit(repo: Repository, parsed: ParsedCommand): CommandResul
     message: msg,
     tree,
     parents: parentId ? [parentId] : [],
+    branch,
   });
   moveBranchLocal(next, branch, commit.id);
   nwt.index = cloneTree(tree);

@@ -4,6 +4,14 @@ import App from './App';
 import { useLabStore } from './store/useLabStore';
 import './index.css';
 
+window.addEventListener('error', (e) => {
+  const stack = e.error?.stack ? String(e.error.stack).slice(0, 500) : '';
+  document.title = 'ERR: ' + String(e.message).slice(0, 120) + ' @@ ' + stack.replace(/\n/g, ' ~ ');
+});
+window.addEventListener('unhandledrejection', (e) => {
+  document.title = 'REJ: ' + String(e.reason).slice(0, 300);
+});
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />

@@ -1,5 +1,49 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Design Tokens — 全站唯一颜色/字体/圆角/投影来源
+   风格：扁平卡片式教学信息图（Flat 2.0 / 贴纸感）
+   禁止：渐变、玻璃拟态、多层阴影、发光、高饱和荧光色
+   ============================================================ */
+:root {
+  /* 颜色 */
+  --color-cream: #f0eee7; /* 米白：主线 commit 节点、工作区文件条 */
+  --color-blue: #85ace3; /* 雾蓝：master 提交节点、feature 标签底、add 箭头 */
+  --color-mint: #b9dcc6; /* 薄荷绿：master 标签底 */
+  --color-mint-border: #7fcb96; /* 亮绿：提交历史区描边、commit 箭头 */
+  --color-orange: #eca763; /* 暖橙：feature 分支节点与标签底 */
+  --color-yellow: #e9d5a3; /* 米黄：高亮圆环、rebase 动作箭头 */
+  --color-zone-work: #2c2c2c; /* 工作区卡片底 */
+  --color-zone-stage: #2e3a50; /* 暂存区卡片底 */
+  --color-zone-stage-border: #6ea0e6; /* 暂存区描边 */
+  --color-zone-history: #2a4335; /* 提交历史卡片底 */
+  --color-chip-stage: #d4e0f6; /* 暂存区文件条底 */
+  --color-ink: #1e2b3a; /* 标签和箭头上的深色文字 */
+  --color-bg: #3a3a3a; /* 页面中性深灰 */
+  --color-ghost: #6f6a5e; /* 幽灵态：降饱和灰褐填充 */
+
+  /* 扩展令牌（终端语义/状态反馈，同样全站唯一来源） */
+  --color-ok: #7fcb96;
+  --color-warn: #e9d5a3;
+  --color-error: #d98d86;
+  --color-info: #85ace3;
+  --color-muted: rgba(240, 238, 231, 0.55);
+  --color-hairline: rgba(240, 238, 231, 0.14);
+
+  /* 字体 */
+  --font-mono: "JetBrains Mono", "Fira Code", "IBM Plex Mono", Consolas, monospace;
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  /* 圆角 */
+  --radius-card: 16px;
+  --radius-sub: 12px;
+  --radius-chip: 10px;
+  --radius-badge: 6px;
+
+  /* 投影：统一单层柔和投影 */
+  --shadow-flat: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
 html,
 body,
 #root {
@@ -7,55 +51,48 @@ body,
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  color: #0f172a;
-  background-color: #f4f6fa;
-  background-image: radial-gradient(1100px 460px at 12% -8%, rgba(186, 214, 246, 0.28), transparent 62%),
-    radial-gradient(900px 420px at 96% -6%, rgba(205, 210, 244, 0.22), transparent 58%);
-  background-attachment: fixed;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--color-cream);
+  background: var(--color-bg);
 }
 
+/* 代码语义文字：等宽粗体（分支名/命令/文件名/commit 编号/路径） */
 .mono {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    "Liberation Mono", monospace;
+  font-family: var(--font-mono);
+  font-weight: 700;
 }
 
-/* Liquid Glass：质感增强，不做视觉主体 */
-.glass {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(12px) saturate(1.35);
-  -webkit-backdrop-filter: blur(12px) saturate(1.35);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.05),
-    0 12px 32px -18px rgba(15, 23, 42, 0.18);
+/* 扁平卡片：纯色块 + 大圆角 + 单层柔和投影 */
+.flat-card {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-flat);
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(14px) saturate(1.25);
-  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+/* 分区卡片：深色底 + 亮色描边 */
+.zone {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-flat);
+  border-width: 2px;
+  border-style: solid;
 }
 
-/* 箭头流动感（仅在操作触发时启用） */
-@keyframes flow {
-  to {
-    stroke-dashoffset: -22;
-  }
-}
-.flow-dash {
-  stroke-dasharray: 5 6;
-  animation: flow 0.7s linear infinite;
+/* 描边式小圆角徽章 */
+.badge-outline {
+  border-radius: var(--radius-badge);
+  border: 1.5px solid currentColor;
+  padding: 0 6px;
+  font-size: 10px;
+  line-height: 18px;
+  font-weight: 700;
 }
 
-/* 细滚动条 */
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: rgba(240, 238, 231, 0.22);
   border-radius: 8px;
 }
 *::-webkit-scrollbar-track {

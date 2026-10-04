@@ -23,6 +23,7 @@ export interface Commit {
   tree: Record<string, Line[]>; // 全量快照 path → 行
   merge: boolean; // 是否为合并提交（两个 parents）
   order: number; // 创建顺序（时钟），用于排序
+  branch?: string; // 创建时所在分支（用于 Graph 颜色溯源）
 }
 
 export interface Branch {

@@ -261,6 +261,7 @@ export function cmdMerge(repo: Repository, parsed: ParsedCommand): CommandResult
       tree: merged,
       parents: [oursTip, theirsTip],
       merge: true,
+      branch: curBranch,
     });
     moveBranch(next, curBranch, commit.id);
     // 工作区与暂存区同步合并结果（对齐真实 git 的行为）

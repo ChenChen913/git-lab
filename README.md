@@ -4,22 +4,22 @@
 
 ![总览](docs/screenshots/overview.png)
 
-这不是一个 Git 教程阅读网站，而是一个可以随便试、随便玩、改坏了能重来的**交互式 Git 实验室**。项目的全部教学内容来自两份本地文档（`git+github教程.md` 视频转稿与整理后的 `Git与GitHub入门教程.md`），UI 规范来自 `UI 设计.md`（工程化落地见 [docs/UI-DESIGN-SPEC.md](docs/UI-DESIGN-SPEC.md)）。
+这不是一个 Git 教程阅读网站，而是一个可以随便试、随便玩、改坏了能重来的**交互式 Git 实验室**。视觉风格为**扁平卡片式教学信息图**（深灰底 + 低饱和马卡龙色 + 贴纸质感，参见 [docs/UI-DESIGN-SPEC.md](docs/UI-DESIGN-SPEC.md)）；教学内容来自两份本地文档（`git+github教程.md` 视频转稿与整理后的 `Git与GitHub入门教程.md`）。
 
 ## 核心体验
 
-- **三个区域**：Working Tree / Staging Area / Commit History，文件在区域间的移动有方向性动画（飞行芯片 + 流动箭头）。
-- **Commit Graph（视觉中心）**：SVG 绘制，表达父子关系、分叉与汇合、分支标签、HEAD 位置；被 reset/rebase 挤掉的提交以"虚影"呈现，看见旧提交去了哪里。
+- **三个区域**（对照教学视频图解）：工作区（深灰）→ `git add` 蓝色粗箭头 → `.git` 虚线分组框内的暂存区（深蓝）与提交历史（深绿）；文件条带类型图标，随所在分区变色；提交历史内嵌 `Commit N` 子卡片。
+- **Commit Graph（视觉中心）**：水平主干时间线，SVG 绘制；圆点颜色 = 所属分支、气泡标签 = 分支名、黄色圆环 = HEAD、平滑贝塞尔曲线 = 分叉与汇合；被 reset/rebase 挤掉的提交以"虚线幽灵"呈现。
 
 ![合并与冲突](docs/screenshots/merge-graph.png)
 
-- **合并冲突现场**：双方版本左右对照、差异行自动滚动高亮，提供"取当前 / 取对方 / 都保留 / 手动编辑"四种解决方式，走完 `解决 → git add → git commit` 的完整闭环。
+- **合并冲突现场**：双方版本左右对照（蓝区 vs 橙区）、差异行自动滚动高亮，提供"取当前 / 取对方 / 都保留 / 手动编辑"四种解决方式，走完 `解决 → git add → git commit` 的完整闭环。
 
 ![冲突面板](docs/screenshots/conflict.png)
 
 - **Rebase 重放**：旧提交变虚影、逐个重放到新地基（D → D′），冲突后 `git add` + `git rebase --continue` 继续。
 
-![Rebase 幽灵节点](docs/screenshots/rebase-ghost.png)
+![幽灵节点](docs/screenshots/rebase-ghost.png)
 
 - **Stash / Worktree / Remote**：stash 收起未提交改动让切换不被阻塞；worktree 多目录并行但共享同一份提交历史；模拟远程演示 push / pull / clone 与 SSH Key 验证原理。
 - **引导实验**：9 个分步实验（第一次存档、日常循环、分支是指针、冲突现场、后悔药、换地基、临时收起、一库多目录、推上远程），每一步校验你真实输入的命令，给出进度与提示。

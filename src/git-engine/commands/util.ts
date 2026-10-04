@@ -53,10 +53,10 @@ export function fileSummary(before: Tree, after: Tree): string {
   return parts.join(', ');
 }
 
-/** 在 next 仓库上创建一个 commit（clock 自增） */
+/** 在 next 仓库上创建一个 commit（clock 自增）；branch = 创建时所在分支（颜色溯源用） */
 export function makeCommit(
   next: Repository,
-  opts: { message: string; tree: Tree; parents: string[]; merge?: boolean },
+  opts: { message: string; tree: Tree; parents: string[]; merge?: boolean; branch?: string },
 ): Commit {
   next.clock += 1;
   const id = `c${next.clock}`;
@@ -69,6 +69,7 @@ export function makeCommit(
     tree: opts.tree,
     merge: !!opts.merge,
     order: next.clock,
+    branch: opts.branch,
   };
   commit.hash = fakeHashFor(commit.id + commit.message);
   next.commits[id] = commit;
