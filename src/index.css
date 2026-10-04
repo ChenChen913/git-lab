@@ -10,12 +10,43 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   color: #0f172a;
-  background: #f6f8fb;
+  background-color: #f4f6fa;
+  background-image: radial-gradient(1100px 460px at 12% -8%, rgba(186, 214, 246, 0.28), transparent 62%),
+    radial-gradient(900px 420px at 96% -6%, rgba(205, 210, 244, 0.22), transparent 58%);
+  background-attachment: fixed;
 }
 
 .mono {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
+}
+
+/* Liquid Glass：质感增强，不做视觉主体 */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px) saturate(1.35);
+  -webkit-backdrop-filter: blur(12px) saturate(1.35);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 12px 32px -18px rgba(15, 23, 42, 0.18);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+}
+
+/* 箭头流动感（仅在操作触发时启用） */
+@keyframes flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+.flow-dash {
+  stroke-dasharray: 5 6;
+  animation: flow 0.7s linear infinite;
 }
 
 /* 细滚动条 */

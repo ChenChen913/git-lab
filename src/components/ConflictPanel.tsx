@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertTriangle, Check, Pencil } from 'lucide-react';
 import { useLabStore } from '../store/useLabStore';
 import { activeWt } from '../git-engine/repository';
+import { diffLines } from '../git-engine/text';
 
 /** 合并/变基冲突面板：双方版本对照 + 四种解决方式 */
 export function ConflictPanel() {
@@ -38,21 +39,21 @@ export function ConflictPanel() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-6"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-6 backdrop-blur-sm"
       >
         <motion.div
           initial={{ scale: 0.95, y: 12 }}
           animate={{ scale: 1, y: 0 }}
-          className="flex max-h-[82vh] w-[860px] max-w-full flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+          className="flex max-h-[82vh] w-[880px] max-w-full flex-col overflow-hidden rounded-2xl bg-white/95 shadow-2xl ring-1 ring-slate-200/80 backdrop-blur-xl"
         >
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-rose-50 px-5 py-3">
-            <AlertTriangle className="h-4 w-4 text-rose-500" />
+          <div className="flex items-center gap-3 border-b border-slate-100 bg-rose-50/80 px-5 py-3">
+            <AlertTriangle className="h-5 w-5 text-rose-500" />
             <div>
-              <div className="text-sm font-semibold text-rose-700">
-                {isRebase ? '变基冲突（rebase）' : '合并冲突（merge）'}
+              <div className="text-sm font-bold text-rose-700">
+                {isRebase ? 'Rebase Conflict' : 'Merge Conflict'}
               </div>
               <div className="text-[11px] text-rose-500">
-                两条分支改了同一个位置、内容不同——Git 无法替你决定，需要你来裁决
+                {isRebase ? '变基冲突' : '合并冲突'}：两条分支改了同一个位置、内容不同——Git 无法替你决定，需要你来裁决
               </div>
             </div>
             <button
@@ -86,10 +87,11 @@ export function ConflictPanel() {
           {info && (
             <div className="min-h-0 flex-1 overflow-auto p-5">
               <div className="grid grid-cols-2 gap-3">
-                <SidePanel title={`HEAD（当前分支）`} lines={info.ours} tone="sky" />
+                <SidePanel title="HEAD（当前分支）" lines={info.ours} other={info.theirs} tone="sky" />
                 <SidePanel
                   title={isRebase ? `被重放的提交（${wt.rebaseState!.ontoBranch} 的对立面）` : `合入分支（${wt.mergeState!.theirsBranch}）`}
                   lines={info.theirs}
+                  other={info.ours}
                   tone="orange"
                 />
               </div>
@@ -158,17 +160,59 @@ export function ConflictPanel() {
   );
 }
 
-function SidePanel({ title, lines, tone }: { title: string; lines: string[]; tone: 'sky' | 'orange' }) {
+function SidePanel({
+  title,
+  lines,
+  other,
+  tone,
+}: {
+  title: string;
+  lines: string[];
+  other: string[];
+  tone: 'sky' | 'orange';
+}) {
+  const flags = useMemo(() => diffFlags(lines, other), [lines, other]);
+  const boxRef = useRef<HTMLDivElement>(null);
+  // 自动滚动到第一处差异
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const first = el.querySelector('[data-ch="1"]');
+    if (first) el.scrollTop = Math.max(0, (first as HTMLElement).offsetTop - 48);
+  }, [lines, other]);
+
   const cls = tone === 'sky' ? 'border-sky-200 bg-sky-50' : 'border-orange-200 bg-orange-50';
   const text = tone === 'sky' ? 'text-sky-700' : 'text-orange-700';
+  const hl = tone === 'sky' ? 'bg-sky-100/80' : 'bg-orange-100/80';
   return (
     <div className={`rounded-xl border ${cls} p-3`}>
       <div className={`text-[11px] font-bold ${text}`}>{title}</div>
-      <pre className="mono mt-1.5 max-h-40 overflow-auto whitespace-pre-wrap text-[11px] leading-relaxed text-slate-600">
-        {lines.length ? lines.join('\n') : '（空）'}
-      </pre>
+      <div ref={boxRef} className="mono relative mt-1.5 max-h-40 overflow-auto rounded-lg bg-white/70 p-2 text-[11px] leading-relaxed">
+        {lines.length ? (
+          lines.map((l, i) => (
+            <div key={i} data-ch={flags[i] ? 1 : 0} className={`whitespace-pre rounded ${flags[i] ? hl : 'text-slate-500'}`}>
+              {l || ' '}
+            </div>
+          ))
+        ) : (
+          <span className="text-slate-400">（空）</span>
+        )}
+      </div>
     </div>
   );
+}
+
+/** 标记 a 中与 b 不同的行（用于高亮差异） */
+function diffFlags(a: string[], b: string[]): boolean[] {
+  const rows = diffLines(a, b);
+  const flags: boolean[] = [];
+  let i = 0;
+  for (const r of rows) {
+    if (r.type === 'same') flags[i++] = false;
+    else if (r.type === 'del') flags[i++] = true;
+  }
+  while (flags.length < a.length) flags.push(true);
+  return flags.slice(0, a.length);
 }
 
 function ResolveBtn({ label, desc, onClick, icon }: { label: string; desc: string; onClick: () => void; icon?: boolean }) {

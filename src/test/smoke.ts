@@ -160,6 +160,10 @@ assert(!r.worktrees[0].mergeState, 'commit 后合并状态清除');
 const mergeCommit = Object.values(r.commits).find((c) => c.parents.length === 2);
 assert(!!mergeCommit, '产生了双亲合并提交');
 assert(tip(r, 'master') === mergeCommit!.id, 'master 指向合并提交');
+assert(
+  (r.worktrees[0].workingFiles['index.html'] ?? []).some((l) => l.includes('complete-btn')),
+  '自动合并后工作区同步合并结果',
+);
 r = ok(r, 'git branch -d feature/complete');
 assert(!r.branches['feature/complete'], '分支已删除');
 r = expectFail(r, 'git branch -d master', 'Cannot delete');

@@ -8,11 +8,11 @@ import { ConflictPanel } from './components/ConflictPanel';
 
 export default function App() {
   return (
-    <div className="flex h-full flex-col bg-[#f6f8fb]">
+    <div className="flex h-full min-w-[1180px] flex-col">
       <TopBar />
       <div className="grid min-h-0 flex-1 grid-cols-[260px_minmax(0,1fr)_340px]">
         <FileExplorer />
-        <main className="flex min-h-0 flex-col border-x border-slate-200">
+        <main className="flex min-h-0 flex-col border-x border-slate-200/60">
           <ThreeAreas />
           <CommitGraph />
         </main>

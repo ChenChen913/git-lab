@@ -32,8 +32,8 @@ export function RightPanel() {
   const tab = useLabStore((s) => s.rightTab);
   const setTab = useLabStore((s) => s.setRightTab);
   return (
-    <aside className="flex min-h-0 flex-col border-l border-slate-200 bg-white">
-      <div className="flex shrink-0 items-center gap-1 border-b border-slate-100 px-2 py-1.5">
+    <aside className="glass-panel flex min-h-0 flex-col">
+      <div className="flex shrink-0 items-center gap-1 border-b border-slate-200/60 px-2 py-1.5">
         {TABS.map((t) => (
           <button
             key={t.id}

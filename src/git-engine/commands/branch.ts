@@ -263,6 +263,10 @@ export function cmdMerge(repo: Repository, parsed: ParsedCommand): CommandResult
       merge: true,
     });
     moveBranch(next, curBranch, commit.id);
+    // 工作区与暂存区同步合并结果（对齐真实 git 的行为）
+    for (const [p, content] of Object.entries(merged)) {
+      if (!sameLines(content, oursTree[p])) nwt.workingFiles[p] = content;
+    }
     nwt.index = { ...merged };
     return {
       repo: next,

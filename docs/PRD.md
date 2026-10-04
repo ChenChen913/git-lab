@@ -1,6 +1,8 @@
 # PRD — Git Visual Lab（Git 可视化交互实验室）
 
-> 知识来源：本项目根目录下的两份 Markdown——`git+github教程.md`（视频转稿）与 `Git与GitHub入门教程.md`（整理后的教程总结）。本 PRD 的全部教学范围以这两份文件为准。
+> 知识来源：本项目根目录下的两份 Markdown——`git+github教程.md`（视频转稿）与 `Git与GitHub入门教程.md`（整理后的教程总结）；UI 与视觉的硬性要求来自 `../UI 设计.md`（工程化落地为 [UI-DESIGN-SPEC.md](./UI-DESIGN-SPEC.md)）。本 PRD 的全部教学范围以这些文件为准。
+>
+> 代码仓库：https://github.com/ChenChen913/git-lab （开发过程中持续推送）
 
 ## 1. 项目定位
 

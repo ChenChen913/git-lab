@@ -9,7 +9,8 @@ const ROW_H = 52;
 const LANE_W = 46;
 const LEFT_W = 200;
 const NODE_R = 8;
-const PALETTE = ['#2563eb', '#059669', '#d97706', '#7c3aed', '#db2777', '#0891b2', '#65a30d', '#ea580c'];
+// 低饱和分支调色板（UI-DESIGN-SPEC 第 5 节）
+const PALETTE = ['#5b7fc7', '#5a9e82', '#c2914e', '#8d76c9', '#c06f95', '#5596a8', '#7d9a55', '#bd7a55'];
 
 interface Row {
   commit: Commit;
@@ -114,11 +115,11 @@ export function CommitGraph() {
   }, [labels]);
 
   return (
-    <div className="relative min-h-0 flex-1 overflow-auto bg-white">
-      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-slate-100 bg-white/90 px-4 py-1.5 backdrop-blur">
+    <div className="relative min-h-0 flex-1 overflow-auto">
+      <div className="glass sticky top-0 z-10 flex items-center gap-2 rounded-none border-0 border-b border-slate-200/60 px-4 py-1.5">
         <GitCommitHorizontal className="h-3.5 w-3.5 text-slate-400" />
-        <span className="text-xs font-semibold text-slate-700">Commit Graph</span>
-        <span className="text-[10px] text-slate-400">圆点 = 提交 · 线 = 父子关系 · 虚影 = 被回退/重写的旧提交</span>
+        <span className="text-xs font-semibold text-slate-800">Commit Graph</span>
+        <span className="text-[10px] text-slate-400">提交历史 · 圆点 = 提交 · 线 = 父子关系 · 虚影 = 被回退/重写的旧提交</span>
       </div>
 
       {!repo.initialized && (
@@ -135,6 +136,11 @@ export function CommitGraph() {
 
       {repo.initialized && rows.length > 0 && (
         <svg width={width} height={height} className="block">
+          <defs>
+            <filter id="gnodeShadow" x="-60%" y="-60%" width="220%" height="220%">
+              <feDropShadow dx="0" dy="1.5" stdDeviation="1.6" floodColor="#0f172a" floodOpacity="0.28" />
+            </filter>
+          </defs>
           {/* 连线（父关系） */}
           {rows.map((r, i) =>
             r.commit.parents.map((p) => {
@@ -154,9 +160,10 @@ export function CommitGraph() {
                   d={d}
                   fill="none"
                   stroke={r.ghost || pr.ghost ? '#cbd5e1' : PALETTE[r.lane % PALETTE.length]}
-                  strokeWidth={r.ghost || pr.ghost ? 1.2 : 1.8}
+                  strokeWidth={r.ghost || pr.ghost ? 1.4 : 2.4}
+                  strokeLinecap="round"
                   strokeDasharray={r.ghost || pr.ghost ? '4 3' : undefined}
-                  opacity={r.ghost || pr.ghost ? 0.55 : 0.9}
+                  opacity={r.ghost || pr.ghost ? 0.55 : 0.92}
                 />
               );
             }),
@@ -170,17 +177,30 @@ export function CommitGraph() {
               return (
                 <motion.g
                   key={r.commit.id}
+                  data-commit-id={r.commit.id}
                   initial={{ opacity: 0, scale: 0.4 }}
                   animate={{ opacity: r.ghost ? 0.4 : 1, scale: 1, x: x(r.lane), y: y(i) }}
                   exit={{ opacity: 0, scale: 0.4 }}
                   transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                 >
-                  {r.commit.merge && <circle r={NODE_R + 3.5} fill="none" stroke={color} strokeOpacity={0.45} strokeWidth={1.5} />}
-                  <circle r={NODE_R} fill={r.ghost ? '#e2e8f0' : color} stroke={r.ghost ? '#94a3b8' : '#fff'} strokeWidth={2} strokeDasharray={r.ghost ? '3 2' : undefined} />
-                  {/* 分支/HEAD 标签 */}
-                  {(labelsByCommit.get(r.commit.id) ?? []).map((l) => {
+                  {r.commit.merge && (
+                    <circle r={NODE_R + 4} fill="none" stroke={color} strokeOpacity={0.45} strokeWidth={2} />
+                  )}
+                  <circle
+                    r={NODE_R}
+                    fill={r.ghost ? '#e2e8f0' : color}
+                    stroke={r.ghost ? '#94a3b8' : '#ffffff'}
+                    strokeWidth={2.5}
+                    strokeDasharray={r.ghost ? '3 2' : undefined}
+                    filter={r.ghost ? undefined : 'url(#gnodeShadow)'}
+                  />
+                  {/* 分支/HEAD 标签（向左水平堆叠，避免重叠） */}
+                  {(labelsByCommit.get(r.commit.id) ?? []).map((l, li, arr) => {
                     const isHeadChip = l.text === 'HEAD';
                     const w = chipWidth(l.text);
+                    // 从节点左侧开始依次向左排布
+                    let right = 14;
+                    for (let k = 0; k < li; k++) right += chipWidth(arr[k].text) + 5;
                     return (
                       <motion.g
                         key={l.key}
@@ -189,17 +209,17 @@ export function CommitGraph() {
                         exit={{ opacity: 0 }}
                       >
                         <rect
-                          x={-14 - w}
-                          y={-9}
+                          x={-right - w}
+                          y={-9.5}
                           width={w}
-                          height={18}
-                          rx={9}
-                          fill={isHeadChip ? '#0f172a' : '#fff'}
+                          height={19}
+                          rx={9.5}
+                          fill={isHeadChip ? '#0f172a' : 'rgba(255,255,255,0.94)'}
                           stroke={isHeadChip ? '#0f172a' : l.color}
-                          strokeWidth={1.4}
+                          strokeWidth={1.6}
                         />
                         <text
-                          x={-14 - w / 2}
+                          x={-right - w / 2}
                           y={3.5}
                           textAnchor="middle"
                           fontSize={10}

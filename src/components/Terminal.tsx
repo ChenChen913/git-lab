@@ -72,7 +72,8 @@ export function Terminal() {
     <div className="flex h-56 shrink-0 flex-col border-t border-slate-800 bg-slate-900" onClick={() => inputRef.current?.focus()}>
       <div className="flex items-center gap-2 border-b border-slate-800 px-4 py-1.5">
         <TerminalSquare className="h-3.5 w-3.5 text-slate-500" />
-        <span className="text-[11px] font-semibold text-slate-400">Terminal</span>
+        <span className="text-[11px] font-semibold text-slate-300">Terminal</span>
+        <span className="text-[10px] text-slate-600">终端</span>
         <div className="ml-4 flex items-center gap-1">
           {QUICK.map((q) => (
             <button
